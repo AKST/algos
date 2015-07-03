@@ -38,7 +38,9 @@ public class IndexUF<T extends Object> {
    * @return the component identifier for the component containing site <tt>p</tt>
    * @throws java.lang.IndexOutOfBoundsException unless 0 <= p < N
    */
-  public Indexed<T> find(int p) {
+  public Indexed<T> find(int pRaw) {
+		// styling software won't let me get away with this
+		int p = pRaw;
     validate(p);
     while (p != parent[p].index) {
       p = parent[p].index;
