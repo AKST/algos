@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * Percolation is a model of a percolation simulation
  * for a grid of N by N squares.
  */
-class Percolation {
+public class Percolation {
 
   final private int INDEX_ERROR = 1;
 

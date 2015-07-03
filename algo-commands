@@ -1,0 +1,52 @@
+#! /usr/local/bin/fish
+
+set src_path 'src'
+set test_path 'test'
+set dist_dir 'dist'
+set package_path 'io.akst.algo'
+
+function init
+  mkdir -p $dist_dir
+end
+
+function clean
+  init
+  rm -rf "$dist_dir/*"
+end
+
+
+function build
+  clean
+  set src_src (tree -f -i -a $src_path | ag ".java\$")
+  set test_src (tree -f -i -a $test_path | ag ".java\$")
+  set source_tree $src_src $test_src
+  javac -sourcepath src:test -cp "lib/*" -d dist $source_tree
+end
+
+function run
+  switch $argv[2]
+    case 1
+      java -cp "dist:lib/*" io.akst.algo.week1.PercolationStats $argv[3] $argv[4]
+  end
+end
+
+function test
+  echo ''
+  java -cp "dist:lib/*" org.junit.runner.JUnitCore io.akst.algo.RunAllTheTests
+end
+
+if [ (count $argv) -gt 0 ]
+  switch $argv[1]
+    case build
+      build
+    case clean
+      clean
+    case init
+      init
+    case run
+      run $argv
+    case test
+      test
+  end
+end
+
