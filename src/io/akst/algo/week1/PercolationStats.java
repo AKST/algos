@@ -12,25 +12,25 @@ public class PercolationStats {
   final private int N;
   final private int T;
 
-	public PercolationStats(final int N, final int T) {
+  public PercolationStats(final int N, final int T) {
     if (N < 0 || T < 0) {
       throw new IllegalArgumentException("T and N cannot be less than 0");
     }
     this.times = new double[T];
     this.N = N;
     this.T = T;
-	}
+  }
 
-	public double mean() {
+  public double mean() {
     this.run();
     double sum = 0;
     for (int index = 0; index < this.T; index++) {
       sum += this.times[index];
     }
-		return sum / this.T;
-	}
+    return sum / this.T;
+  }
 
-	public double stddev() {
+  public double stddev() {
     this.run();
     double sum = 0;
     double sqSum = 0;
@@ -41,21 +41,18 @@ public class PercolationStats {
     double mean = sum / this.T;
     double variance = sqSum / this.T - mean * mean;
     double stddev =  Math.sqrt(variance);
-    if (stddev > mean) {
-      stddev = mean - (stddev - mean);
-    }
     return stddev;
-	}
+  }
 
-	public double confidenceLo() {
+  public double confidenceLo() {
     this.run();
     return this.mean() - 1.96 * this.stddev();
-	}
+  }
 
-	public double confidenceHi() {
+  public double confidenceHi() {
     this.run();
     return this.mean() + 1.96 * this.stddev();
-	}
+  }
 
   /**
    * whether the experinment has run yet, this is persisted
@@ -86,9 +83,9 @@ public class PercolationStats {
     }
   }
 
-	public static void main(String[] args) {
-    int gridSize    = Integer.parseInt(args[0]);
-    int experiments = Integer.parseInt(args[1]);
+  public static void main(String[] args) {
+    int gridSize    = Integer.parseInt(args[0], 10);
+    int experiments = Integer.parseInt(args[1], 10);
 
     PercolationStats stats = new PercolationStats(gridSize, experiments);
 
@@ -104,6 +101,6 @@ public class PercolationStats {
     System.out.format("%-19s = %f%n",    "mean",                mean);
     System.out.format("%-19s = %f%n",    "stddev",              stddev);
     System.out.format("%-19s = %f %f%n", "confidence interval", confidenceLo, confidenceHi);
-	}
+  }
 
 }
