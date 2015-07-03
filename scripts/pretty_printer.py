@@ -96,7 +96,6 @@ class PrettyPretter:
             self.out += ' {'
             self.current_indent += 1
             self.line_break()
-            self.line_break()
             for declaration in tree.body:
                 self._print_tree(declaration)
             self.current_indent -= 1
@@ -110,6 +109,7 @@ class PrettyPretter:
             for declaration in tree.variable_declarators:
                 self._print_tree(declaration)
         elif type(tree) == plyj.FieldDeclaration:
+            self.line_break()
             for modifier in tree.modifiers:
                 self.out += modifier + ' '
             self._print_tree(tree.type)
@@ -152,14 +152,14 @@ class PrettyPretter:
             for modifier in tree.modifiers:
                 self.out += modifier + ' '
             self._print_tree(tree.return_type)
-            self.out +=  ' ' + tree.name + ' '
+            self.out +=  ' ' + tree.name
             if tree.type_parameters:
-                raise UnsupportedASTError('type_parameters ConstructorDeclaration')
+                raise UnsupportedASTError('type_parameters MethodDeclaration')
             self.out += '('
             self.comma_seperate(tree.parameters)
             self.out += ')'
             if tree.throws:
-                raise UnsupportedASTError('throws ConstructorDeclaration')
+                raise UnsupportedASTError('throws MethodDeclaration')
             if tree.abstract:
                 self.out += ';'
             else:
@@ -171,7 +171,7 @@ class PrettyPretter:
             for modifier in tree.modifiers:
                 self._print_tree(modifier)
                 self.out += ' '
-            self.out += tree.name + ' '
+            self.out += tree.name
             self.out += '('
             self.comma_seperate(tree.parameters)
             self.out += ')'
@@ -251,7 +251,7 @@ class PrettyPretter:
         elif type(tree) == plyj.DoWhile:
             self.out += 'do'
             self.block(tree.body)
-            self.out += 'while ('
+            self.out += ' while ('
             self._print_tree(tree.predicate)
             self.out += ')'
         elif type(tree) == plyj.While:
