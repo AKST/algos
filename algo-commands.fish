@@ -20,17 +20,17 @@ end
 # deps
 #
 function deps
-  if [ ! -f lib/stdlib.jar ]
-    curl -o lib/stdlib.jar http://algs4.cs.princeton.edu/code/stdlib.jar
+  if [ ! -f $lib_dir/stdlib.jar ]
+    curl -o $lib_dir/stdlib.jar 'http://algs4.cs.princeton.edu/code/stdlib.jar'
   end
-  if [ ! -f lib/algs4.jar ]
-    curl -o lib/algs4.jar http://algs4.cs.princeton.edu/code/algs4.jar
+  if [ ! -f $lib_dir/algs4.jar ]
+    curl -o $lib_dir/algs4.jar 'http://algs4.cs.princeton.edu/code/algs4.jar'
   end
-  if [ ! -f lib/junit-4.11.jar ]
-    curl -L -o lib/junit-4.11.jar http://search.maven.org/remotecontent?filepath=junit/junit/4.11/junit-4.11.jar
+  if [ ! -f $lib_dir/junit-4.11.jar ]
+    curl -L -o $lib_dir/junit-4.11.jar 'http://search.maven.org/remotecontent?filepath=junit/junit/4.11/junit-4.11.jar'
   end
-  if [ ! -f lib/hamcrest-core-1.3.jar ]
-    curl -L -o lib/hamcrest-core-1.3.jar http://search.maven.org/remotecontent?filepath=org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar
+  if [ ! -f $lib_dir/hamcrest-core-1.3.jar ]
+    curl -L -o $lib_dir/hamcrest-core-1.3.jar 'http://search.maven.org/remotecontent?filepath=org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar'
   end
 end
 
