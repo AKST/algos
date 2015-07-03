@@ -6,11 +6,18 @@ import java.util.Random;
 
 public class PercolationStats {
 
-  final private Random random = new Random();
-  final private double[] times;
+  private final Random random = new Random();
+  private final double[] times;
 
-  final private int N;
-  final private int T;
+  private final int N;
+  private final int T;
+
+
+  /**
+   * whether the experinment has run yet, this is persisted
+   * PercolationStats doesn't run the experinment more than once
+   */
+  private boolean hasRan = false;
 
   public PercolationStats(final int N, final int T) {
     if (N < 0 || T < 0) {
@@ -53,12 +60,6 @@ public class PercolationStats {
     this.run();
     return this.mean() + (1.96 * this.stddev());
   }
-
-  /**
-   * whether the experinment has run yet, this is persisted
-   * PercolationStats doesn't run the experinment more than once
-   */
-  private boolean hasRan = false;
 
   /**
    * runs if the experiment has not yet run.

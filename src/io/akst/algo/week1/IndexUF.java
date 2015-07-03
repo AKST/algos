@@ -15,7 +15,7 @@ public class IndexUF<T extends Object> {
   @SuppressWarnings("unchecked")
   public IndexUF(int N, T initial) {
     Indexed<T> sample = new Indexed<T>(0, initial);
-    parent = (Indexed<T>[]) Array.newInstance(sample.getClass(), N);
+    parent = ((Indexed<T>[]) Array.newInstance(sample.getClass(), N));
 
     //parent = (Indexed<T>[]) new Object[N];
     count = N;
@@ -40,8 +40,9 @@ public class IndexUF<T extends Object> {
    */
   public Indexed<T> find(int p) {
     validate(p);
-    while (p != parent[p].index)
+    while (p != parent[p].index) {
       p = parent[p].index;
+		}
     return parent[p];
   }
 
@@ -49,7 +50,8 @@ public class IndexUF<T extends Object> {
   private void validate(int p) {
     int N = parent.length;
     if (p < 0 || p >= N) {
-      throw new IndexOutOfBoundsException("index " + p + " is not between 0 and " + N);
+			String message = "index " + p + " is not between 0 and " + N;
+      throw new IndexOutOfBoundsException(message);
     }
   }
 
@@ -65,13 +67,12 @@ public class IndexUF<T extends Object> {
     return find(p) == find(q);
   }
 
-
   public T getIndex(int i) {
-    return this.parent[i].value;
+    return this.parent[i].getValue();
   }
 
   public void setIndex(int i, T value) {
-    this.parent[i].value = value;
+    this.parent[i].setValue(value);
   }
 
 
@@ -91,14 +92,26 @@ public class IndexUF<T extends Object> {
   }
 
 
-  private class Indexed<T> {
-    public int index;
-    public T value;
+  private static class Indexed<T> {
+    private int index;
+    private T value;
 
     public Indexed(int i, T value) {
       this.index = i;
       this.value = value;
     }
+
+		public int getIndex() {
+			return this.index;
+		}
+
+		public T getValue() {
+			return this.value;
+		}
+
+		public void setValue(T newValue) {
+			this.value = newValue;
+		}
   }
 }
 

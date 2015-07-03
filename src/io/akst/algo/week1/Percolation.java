@@ -1,7 +1,5 @@
 package io.akst.algo.week1;
 
-import java.util.List;
-import java.util.ArrayList;
 
 /**
  * Percolation is a model of a percolation simulation
@@ -9,13 +7,13 @@ import java.util.ArrayList;
  */
 public class Percolation {
 
-  final private int INDEX_ERROR = 1;
+  private final int INDEX_ERROR = 1;
 
-  final private int size;
-  final private IndexUF<Boolean> uf;
+  private final int size;
+  private final IndexUF<Boolean> uf;
 
-  final private int topIndex;
-  final private int bottomIndex;
+  private final int topIndex;
+  private final int bottomIndex;
 
   /**
    * @Param N the height and width
@@ -95,10 +93,12 @@ public class Percolation {
 
   private int getIndex(int row, int col) {
     if (row >= size || row < 0) {
-      throw new IndexOutOfBoundsException("row index "+row+" out of bounds");
+      String message = "row index "+row+" out of bounds";
+      throw new IndexOutOfBoundsException(message);
     }
     else if (col >= size || col < 0) {
-      throw new IndexOutOfBoundsException("col index "+col+" out of bounds");
+      String message = "col index "+col+" out of bounds";
+      throw new IndexOutOfBoundsException(message);
     }
     else {
       return (row * this.size) + col;
