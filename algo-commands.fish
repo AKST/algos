@@ -4,6 +4,7 @@ set src_path 'src'
 set test_path 'test'
 set dist_dir 'dist'
 set lib_dir 'lib'
+set zip_dir 'zips'
 
 set class_path "$dist_dir:$lib_dir/*"
 set package_path 'io.akst.algo'
@@ -14,6 +15,7 @@ set package_path 'io.akst.algo'
 function init
   mkdir -p $dist_dir
   mkdir -p $lib_dir
+  mkdir -p $zip_dir
 end
 
 #
@@ -50,6 +52,10 @@ function build
   javac -sourcepath src:test -cp "$lib_dir/*" -d $dist_dir $source_tree
 end
 
+function package
+  python scripts/package.py $argv[2]
+end
+
 function run
   switch $argv[2]
     case 1
@@ -73,6 +79,8 @@ if [ (count $argv) -gt 0 ]
       deps
     case run
       run $argv
+    case package
+      package $argv
     case test
       test
   end

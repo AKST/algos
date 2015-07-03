@@ -77,7 +77,8 @@ public class PercolationStats {
         } while (percolation.percolates());
 
         long endTime = System.nanoTime();
-        this.times[iteration] = (endTime - startTime) / 1E9;
+        double eplasped = endTime - startTime;
+        this.times[iteration] = eplasped / 1E9;
       }
       this.hasRan = true;
     }
