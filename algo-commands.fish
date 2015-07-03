@@ -5,6 +5,7 @@ set test_path 'test'
 set dist_dir 'dist'
 set lib_dir 'lib'
 set zip_dir 'zips'
+set tool_dir 'tools'
 
 set class_path "$dist_dir:$lib_dir/*"
 set package_path 'io.akst.algo'
@@ -16,12 +17,11 @@ function init
   mkdir -p $dist_dir
   mkdir -p $lib_dir
   mkdir -p $zip_dir
-end
+  mkdir -p $tool_dir
 
-#
-# deps
-#
-function deps
+  #
+  # deps
+  #
   if [ ! -f $lib_dir/stdlib.jar ]
     curl -o $lib_dir/stdlib.jar 'http://algs4.cs.princeton.edu/code/stdlib.jar'
   end
@@ -34,6 +34,13 @@ function deps
   if [ ! -f $lib_dir/hamcrest-core-1.3.jar ]
     curl -L -o $lib_dir/hamcrest-core-1.3.jar 'http://search.maven.org/remotecontent?filepath=org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar'
   end
+
+	#
+	# tooling
+	#
+	if [ ! -f $tool_dir/checkstyle.jar ]
+		curl -o $tool_dir/checkstyle.jar 'http://jaist.dl.sourceforge.net/project/checkstyle/checkstyle/6.8.1/checkstyle-6.8.1-all.jar'
+	end
 end
 
 #
@@ -53,7 +60,26 @@ function build
 end
 
 function package
-  python scripts/package.py $argv[2]
+	set week_number $argv[1]
+	set zip_location "$zip_dir/week_$week_number.zip"
+	set unzip_location "$zip_dir/week_$week_number"
+	#
+	# preserve old file
+	#
+	if [ -f $zip_location ]
+		set old_file_c_time (stat -f '%c' "$zip_location")
+		mv $zip_location "$zip_dir/.week_$week_number-$old_file_c_time.zip"
+	end
+  python scripts/package.py $week_number $zip_location
+	unzip $zip_location -d $unzip_location
+	set java_source (find $unzip_location -name '*.java')
+	javac $java_source
+	for file in $java_source
+		java -jar $tool_dir/checkstyle.jar \
+				com.puppycrawl.tools.checkstyle.Main \
+				-c config/styles.xml $file
+	end
+	rm -rf $unzip_location
 end
 
 function run
@@ -68,6 +94,18 @@ function test
   java -cp $class_path org.junit.runner.JUnitCore "$package_path.RunAllTheTests"
 end
 
+function help
+	echo
+	echo 'USAGE:'
+	echo
+	echo "  build     | compiles the source"
+	echo "  clean     | removes compiled source"
+	echo "  run     n | runs the source from week n"
+	echo "  package n | zips the source from week n"
+	echo "  test      | runs all tests"
+	echo
+end
+
 if [ (count $argv) -gt 0 ]
   init
   switch $argv[1]
@@ -75,14 +113,17 @@ if [ (count $argv) -gt 0 ]
       build
     case clean
       clean
-    case deps
-      deps
     case run
       run $argv
     case package
-      package $argv
+      package $argv[2]
     case test
       test
+    case help
+      help
   end
+else
+	help
 end
+
 

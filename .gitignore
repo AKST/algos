@@ -1,5 +1,6 @@
 *.class
 data
 zips
+tools
 lib
 scripts/env
