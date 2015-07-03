@@ -6,7 +6,8 @@ import java.lang.reflect.Array;
 public class IndexUF<T extends Object> {
   private Indexed<T>[] parent;  // parent[i] = parent of i
   private int count;     // number of components
-/**
+
+	/**
    * Initializes an empty union-find data structure with N isolated components 0 through N-1.
    * @throws java.lang.IllegalArgumentException if N < 0
    * @param N the number of objects
