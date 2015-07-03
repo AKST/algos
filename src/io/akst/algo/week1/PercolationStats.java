@@ -89,18 +89,18 @@ public class PercolationStats {
 
     PercolationStats stats = new PercolationStats(gridSize, experiments);
 
-    double mean         = stats.mean();
-    double stddev       = stats.stddev();
-    double confidenceLo = stats.confidenceLo();
-    double confidenceHi = stats.confidenceHi();
+    double mean   = stats.mean();
+    double stddev = stats.stddev();
+    double coLo   = stats.confidenceLo();
+    double coHi   = stats.confidenceHi();
 
     //
     // %-19s is for leveling output with the length
     // of the largest prefix `confidence interval`.
     //
-    System.out.format("%-19s = %f%n",    "mean",                mean);
-    System.out.format("%-19s = %f%n",    "stddev",              stddev);
-    System.out.format("%-19s = %f %f%n", "confidence interval", confidenceLo, confidenceHi);
+    System.out.format("%-23s = %f%n", "mean", mean);
+    System.out.format("%-23s = %f%n", "stddev", stddev);
+    System.out.format("%-23s = %f %f%n", "95% confidence interval", coLo, coHi);
   }
 
 }

@@ -7,15 +7,15 @@ public class IndexUF<T extends Object> {
   private Indexed<T>[] parent;  // parent[i] = parent of i
   private int count;     // number of components
 
-	/**
+  /**
    * Initializes an empty union-find data structure with N isolated components 0 through N-1.
    * @throws java.lang.IllegalArgumentException if N < 0
    * @param N the number of objects
    */
   @SuppressWarnings("unchecked")
   public IndexUF(int N, T initial) {
-		Indexed<T> sample = new Indexed<T>(0, initial);
-		parent = (Indexed<T>[]) Array.newInstance(sample.getClass(), N);
+    Indexed<T> sample = new Indexed<T>(0, initial);
+    parent = (Indexed<T>[]) Array.newInstance(sample.getClass(), N);
 
     //parent = (Indexed<T>[]) new Object[N];
     count = N;
@@ -66,13 +66,13 @@ public class IndexUF<T extends Object> {
   }
 
 
-	public T getIndex(int i) {
-		return this.parent[i].value;
-	}
+  public T getIndex(int i) {
+    return this.parent[i].value;
+  }
 
-	public void setIndex(int i, T value) {
-		this.parent[i].value = value;
-	}
+  public void setIndex(int i, T value) {
+    this.parent[i].value = value;
+  }
 
 
   /**
