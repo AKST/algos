@@ -2,6 +2,8 @@ package io.akst.algo.week2;
 
 import org.junit.Test;
 import org.junit.Assert;
+import java.util.NoSuchElementException;
+import java.util.Iterator;
 
 public class DequeTest extends Assert {
 
@@ -115,6 +117,44 @@ public class DequeTest extends Assert {
 
     assertTrue(ints.isEmpty());
     assertTrue(ints.size() == 0);
+  }
+
+  @Test(expected=NullPointerException.class)
+  public void throwOnAddFirstNull() {
+    Deque<Object> objects = new Deque<>();
+    objects.addFirst(null);
+  }
+
+  @Test(expected=NullPointerException.class)
+  public void throwOnAddLastNull() {
+    Deque<Object> objects = new Deque<>();
+    objects.addLast(null);
+  }
+
+  @Test(expected=NoSuchElementException.class)
+  public void throwOnRemoveFirstWhileEmpty() {
+    Deque<Object> objects = new Deque<>();
+    objects.removeFirst();
+  }
+
+  @Test(expected=NoSuchElementException.class)
+  public void throwOnRemoveLastWhileEmpty() {
+    Deque<Object> objects = new Deque<>();
+    objects.removeLast();
+  }
+
+  @Test(expected=NoSuchElementException.class)
+  public void throwOnIteratorNextWhileEmpty() {
+    Deque<Object> objects = new Deque<>();
+    Iterator<Object> iter = objects.iterator();
+    iter.next();
+  }
+
+  @Test(expected=UnsupportedOperationException.class)
+  public void throwOnIteratorRemove() {
+    Deque<Object> objects = new Deque<>();
+    Iterator<Object> iter = objects.iterator();
+    iter.remove();
   }
 
 }
