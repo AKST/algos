@@ -7,10 +7,10 @@ package io.akst.algo.week1;
  */
 public class Percolation {
 
-  private final int INDEX_ERROR = 1;
+  private static final int INDEX_ERROR = 1;
 
   private final int size;
-  private final IndexUF<Boolean> uf;
+  private final IndexUF uf;
 
   private final int topIndex;
   private final int bottomIndex;
@@ -22,7 +22,7 @@ public class Percolation {
     this.size = N;
     this.topIndex    = ((N * N) + 1) - INDEX_ERROR;
     this.bottomIndex = ((N * N) + 2) - INDEX_ERROR;
-    this.uf = new IndexUF<Boolean>((N * N) + 2, false);
+    this.uf = new IndexUF((N * N) + 2, false);
     this.uf.setIndex(topIndex, true);
     this.uf.setIndex(bottomIndex, true);
   }

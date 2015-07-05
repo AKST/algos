@@ -1,10 +1,9 @@
 package io.akst.algo.week1;
 
-import java.lang.reflect.Array;
 
-
-public class IndexUF<T extends Object> {
-  private Indexed<T>[] parent;  // parent[i] = parent of i
+public class IndexUF {
+  private int[]     parent;  // parent[i] = parent of i
+  private boolean[] status;  // parent[i] = parent of i
   private int count;     // number of components
 
   /**
@@ -12,15 +11,15 @@ public class IndexUF<T extends Object> {
    * @throws java.lang.IllegalArgumentException if N < 0
    * @param N the number of objects
    */
-  @SuppressWarnings("unchecked")
-  public IndexUF(int N, T initial) {
-    Indexed<T> sample = new Indexed<T>(0, initial);
-    parent = ((Indexed<T>[]) Array.newInstance(sample.getClass(), N));
+  public IndexUF(int N, boolean initial) {
+    parent = new int[N];
+    status = new boolean[N];
 
-    //parent = (Indexed<T>[]) new Object[N];
+    //parent = (Index[]) new Object[N];
     count = N;
     for (int i = 0; i < N; i++) {
-      parent[i] = new Indexed<T>(i, initial);
+      parent[i] = i;
+      status[i] = false;
     }
   }
 
@@ -38,12 +37,12 @@ public class IndexUF<T extends Object> {
    * @return the component identifier for the component containing site <tt>p</tt>
    * @throws java.lang.IndexOutOfBoundsException unless 0 <= p < N
    */
-  public Indexed<T> find(int pRaw) {
+  public int find(int pRaw) {
 		// styling software won't let me get away with this
 		int p = pRaw;
     validate(p);
-    while (p != parent[p].index) {
-      p = parent[p].index;
+    while (p != parent[p]) {
+      p = parent[p];
 		}
     return parent[p];
   }
@@ -69,12 +68,12 @@ public class IndexUF<T extends Object> {
     return find(p) == find(q);
   }
 
-  public T getIndex(int i) {
-    return this.parent[i].getValue();
+  public boolean getIndex(int i) {
+    return this.status[i];
   }
 
-  public void setIndex(int i, T value) {
-    this.parent[i].setValue(value);
+  public void setIndex(int i, boolean value) {
+    this.status[i] = value;
   }
 
 
@@ -86,34 +85,12 @@ public class IndexUF<T extends Object> {
    * @throws java.lang.IndexOutOfBoundsException unless both 0 <= p < N and 0 <= q < N
    */
   public void union(int p, int q) {
-    Indexed<T> rootP = find(p);
-    Indexed<T> rootQ = find(q);
+    int rootP = find(p);
+    int rootQ = find(q);
     if (rootP == rootQ) return;
-    parent[rootP.index] = rootQ;
+    parent[rootP] = rootQ;
     count--;
   }
 
-
-  private static class Indexed<T> {
-    private int index;
-    private T value;
-
-    public Indexed(int i, T value) {
-      this.index = i;
-      this.value = value;
-    }
-
-		public int getIndex() {
-			return this.index;
-		}
-
-		public T getValue() {
-			return this.value;
-		}
-
-		public void setValue(T newValue) {
-			this.value = newValue;
-		}
-  }
 }
 
