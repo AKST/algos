@@ -58,14 +58,34 @@ function watch_command
     set command $argv[2..(count $argv)]
 
     function watch_prompt
-      echo "[ running (" $argv[1] ") ] :: [" (date +%T) "]"
+      set_color normal
+      echo -n "[ " 
+      set_color green
+      echo -n $argv[1] " ("
+      set_color yellow
+      echo -n $argv[2]
+      set_color green
+      echo -n ")" 
+      set_color normal
+      echo -n " ]" 
+      set_color green
+      echo -n " :: " 
+      set_color normal
+      echo -n "[ " 
+      set_color green
+      echo -n (date +%T)
+      set_color normal
+      echo -n " ]"
+      set_color normal
+      echo 
     end
 
     #
     # initial run of script
     #
-    watch_prompt $command
+    watch_prompt "init" $command
     pick_operation $command
+    watch_prompt "finished" $command
 
     #
     # start watching
@@ -74,8 +94,9 @@ function watch_command
       sleep 1.5
       set changes (find $src_path $test_path -type f -mtime -3s -name '*.java')
       if test $changes
-        watch_prompt $command
+        watch_prompt "starting" $command
         pick_operation $command
+        watch_prompt "finished" $command
       end
     end
   else
