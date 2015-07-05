@@ -5,18 +5,18 @@ import org.junit.Assert;
 import java.util.NoSuchElementException;
 import java.util.Iterator;
 
-public class DequeTest extends Assert {
+public class TestDeque extends Assert {
 
 	@Test public void emptyOnInit() {
 		Deque<Boolean> bools = new Deque<>();
     assertTrue(bools.isEmpty());
-    assertTrue(bools.size() == 0);
+    Assert.assertEquals(bools.size(), 0);
   }
 
 	@Test public void appendingIncreaseSize() {
 		Deque<Boolean> bools = new Deque<>();
     bools.addFirst(true);
-    assertTrue(bools.size() == 1);
+    Assert.assertEquals(bools.size(), 1);
 	}
 
   @Test public void addFirstAndRemoveFirstEmpty() {
@@ -24,7 +24,7 @@ public class DequeTest extends Assert {
     bools.addFirst(true);
     bools.removeFirst();
     assertTrue(bools.isEmpty());
-    assertTrue(bools.size() == 0);
+    Assert.assertEquals(bools.size(), 0);
   }
 
   @Test public void addFirstAndRemoveLastEmpty() {
@@ -32,7 +32,7 @@ public class DequeTest extends Assert {
     bools.addFirst(true);
     bools.removeLast();
     assertTrue(bools.isEmpty());
-    assertTrue(bools.size() == 0);
+    Assert.assertEquals(bools.size(), 0);
   }
 
   @Test public void addLastAndRemoveFirstEmpty() {
@@ -40,7 +40,7 @@ public class DequeTest extends Assert {
     bools.addLast(true);
     bools.removeFirst();
     assertTrue(bools.isEmpty());
-    assertTrue(bools.size() == 0);
+    Assert.assertEquals(bools.size(), 0);
   }
 
   @Test public void addLastAndRemoveLastEmpty() {
@@ -48,7 +48,7 @@ public class DequeTest extends Assert {
     bools.addLast(true);
     bools.removeLast();
     assertTrue(bools.isEmpty());
-    assertTrue(bools.size() == 0);
+    Assert.assertEquals(bools.size(), 0);
   }
 
   @Test public void add5FirstRemove5FirstEqual() {
@@ -65,7 +65,7 @@ public class DequeTest extends Assert {
     Assert.assertEquals((int) ints.removeFirst(), 1); // (1)
 
     assertTrue(ints.isEmpty());
-    assertTrue(ints.size() == 0);
+    Assert.assertEquals(ints.size(), 0);
   }
 
   @Test public void add5FirstRemove5LastEqual() {
@@ -82,7 +82,7 @@ public class DequeTest extends Assert {
     Assert.assertEquals((int) ints.removeLast(), 5); // (5)
 
     assertTrue(ints.isEmpty());
-    assertTrue(ints.size() == 0);
+    Assert.assertEquals(ints.size(), 0);
   }
 
   @Test public void add5LastRemove5FirstEqual() {
@@ -99,7 +99,7 @@ public class DequeTest extends Assert {
     Assert.assertEquals((int) ints.removeFirst(), 5); // (5)
 
     assertTrue(ints.isEmpty());
-    assertTrue(ints.size() == 0);
+    Assert.assertEquals(ints.size(), 0);
   }
 
   @Test public void add5LastRemove5LastEqual() {
@@ -116,7 +116,7 @@ public class DequeTest extends Assert {
     Assert.assertEquals((int) ints.removeLast(), 1); // (1)
 
     assertTrue(ints.isEmpty());
-    assertTrue(ints.size() == 0);
+    Assert.assertEquals(ints.size(), 0);
   }
 
   @Test(expected=NullPointerException.class)
