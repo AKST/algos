@@ -1,5 +1,8 @@
 #! /usr/local/bin/fish
 
+#
+# grabs pipe in put to be used for commands
+#
 set pipe_input (cat)
 
 set src_path 'src'
