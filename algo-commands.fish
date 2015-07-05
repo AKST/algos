@@ -71,8 +71,8 @@ function watch_command
     # start watching
     #
     while true
-      sleep 1.75
-      set changes (find $src_path -type f -mtime -2s -name '*.java')
+      sleep 1.5
+      set changes (find $src_path $test_path -type f -mtime -3s -name '*.java')
       if test $changes
         watch_prompt $command
         pick_operation $command
@@ -146,10 +146,16 @@ function pick_operation
       build
     case clean
       clean
+    case run:build
+      build
+      run $argv
     case run
       run $argv
     case package
       package $argv[2]
+    case test:build
+      build
+      test_command
     case test
       test_command
     case help
