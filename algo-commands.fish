@@ -137,7 +137,13 @@ end
 
 function test_command
   echo ''
-  java -cp $class_path org.junit.runner.JUnitCore "$package_path.RunAllTheTests"
+  #
+  # removes stack trace lines that involve junit or the reflection api
+  #
+  java -cp $class_path org.junit.runner.JUnitCore "$package_path.RunAllTheTests" \
+    | ag -v at\ org.junit. \
+    | ag -v at\ java.lang.reflect. \
+    | ag -v at\ sun.reflect.
 end
 
 function pick_operation
@@ -147,15 +153,17 @@ function pick_operation
     case clean
       clean
     case run:build
-      build
-      run $argv
+      if build
+        run $argv
+      end
     case run
       run $argv
     case package
       package $argv[2]
     case test:build
-      build
-      test_command
+      if build
+        test_command
+      end
     case test
       test_command
     case help
