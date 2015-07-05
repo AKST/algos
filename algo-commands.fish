@@ -3,7 +3,7 @@
 #
 # grabs pipe in put to be used for commands
 #
-set pipe_input (cat)
+
 
 set src_path 'src'
 set test_path 'test'
@@ -131,25 +131,26 @@ function package
   #
   # package exercise
   #
-  python scripts/package.py $week_number $zip_location
-  #
-  # extract output
-  #
-  unzip $zip_location -d $unzip_location
-  #
-  # validate output
-  #
-  set java_source (find $unzip_location -name '*.java')
-  javac $java_source
-  for file in $java_source
-    java -jar $tool_dir/checkstyle.jar \
-        com.puppycrawl.tools.checkstyle.Main \
-        -c config/styles.xml $file
-  end
-  #
-  # remove extracted output
-  #
-  rm -rf $unzip_location
+  if python scripts/package.py $week_number $zip_location
+     #
+     # extract output
+     #
+     unzip $zip_location -d $unzip_location
+     #
+     # validate output
+     #
+     set java_source (find $unzip_location -name '*.java')
+     javac -cp "$lib_dir/*" $java_source
+     for file in $java_source
+       java -jar $tool_dir/checkstyle.jar \
+           com.puppycrawl.tools.checkstyle.Main \
+           -c config/styles.xml $file
+     end
+     #
+     # remove extracted output
+     #
+     rm -rf $unzip_location
+   end
 end
 
 function run
@@ -157,7 +158,7 @@ function run
     case 1
       java -cp $class_path "$package_path.week1.PercolationStats" $argv[3] $argv[4]
     case 2
-      echo $pipe_input | java -cp $class_path "$package_path.week2.Subset" $argv[3]
+      echo $argv[4] | java -cp $class_path "$package_path.week2.Subset" $argv[3]
   end
 end
 

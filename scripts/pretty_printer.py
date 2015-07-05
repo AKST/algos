@@ -92,7 +92,9 @@ class PrettyPretter:
             if tree.extends:
                 raise UnsupportedASTError('extends ClassDeclaration')
             if tree.implements:
-                raise UnsupportedASTError('implements ClassDeclaration')
+                self.out += ' implements '
+                self.comma_seperate(tree.implements)
+                self.out += ' '
             self.out += ' {'
             self.current_indent += 1
             self.line_break()
@@ -124,8 +126,9 @@ class PrettyPretter:
                 raise UnsupportedASTError('enclosed_in Type')
             if tree.type_arguments:
                 self.out += '<'
-                for type_arg in tree.type_arguments:
-                    self._print_tree(type_arg)
+                if tree.type_arguments != 'diamond':
+                    for type_arg in tree.type_arguments:
+                        self._print_tree(type_arg)
                 self.out += '>'
             if tree.dimensions:
                 self.out += '[]' * tree.dimensions
@@ -150,7 +153,8 @@ class PrettyPretter:
             self.line_break()
             self.line_break()
             for modifier in tree.modifiers:
-                self.out += modifier + ' '
+                self._print_tree(modifier)
+                self.out += ' '
             self._print_tree(tree.return_type)
             self.out +=  ' ' + tree.name
             if tree.type_parameters:
@@ -260,6 +264,15 @@ class PrettyPretter:
             self.out += ')'
             self.block(tree.body)
             return True
+        elif type(tree) == plyj.ForEach:
+            self.out += 'for ('
+            self._print_tree(tree.type)
+            self.out += ' '
+            self._print_tree(tree.variable)
+            self.out += ' : '
+            self._print_tree(tree.iterable)
+            self.out += ')'
+            self._print_tree(tree.body)
         elif type(tree) == plyj.For:
             self.out += 'for ('
             self._print_tree(tree.init)
