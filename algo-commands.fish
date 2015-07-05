@@ -1,5 +1,7 @@
 #! /usr/local/bin/fish
 
+set pipe_input (cat)
+
 set src_path 'src'
 set test_path 'test'
 set dist_dir 'dist'
@@ -23,10 +25,10 @@ function init
   # deps
   #
   if [ ! -f $lib_dir/stdlib.jar ]
-    curl -o $lib_dir/stdlib.jar 'http://algs4.cs.princeton.edu/code/stdlib.jar'
+    curl -o $lib_dir/stdlib.jar 'http://algs4.cs.princeton.edu/code/stdlib-package.jar'
   end
   if [ ! -f $lib_dir/algs4.jar ]
-    curl -o $lib_dir/algs4.jar 'http://algs4.cs.princeton.edu/code/algs4.jar'
+    curl -o $lib_dir/algs4.jar 'http://algs4.cs.princeton.edu/code/algs4-package.jar'
   end
   if [ ! -f $lib_dir/junit-4.11.jar ]
     curl -L -o $lib_dir/junit-4.11.jar 'http://search.maven.org/remotecontent?filepath=junit/junit/4.11/junit-4.11.jar'
@@ -152,7 +154,7 @@ function run
     case 1
       java -cp $class_path "$package_path.week1.PercolationStats" $argv[3] $argv[4]
     case 2
-      java -cp $class_path "$package_path.week2.Subset" $argv[3]
+      echo $pipe_input | java -cp $class_path "$package_path.week2.Subset" $argv[3]
   end
 end
 
