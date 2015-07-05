@@ -33,7 +33,7 @@ public class Percolation {
     //
     // link the above cell if open
     //
-    if (row == 0) {
+    if (row == 1) {
       uf.union(topIndex, targetIndex);
     }
     else {
@@ -46,7 +46,7 @@ public class Percolation {
     //
     // link the below cell if open
     //
-    if (row == size - INDEX_ERROR) {
+    if (row == size) {
       uf.union(bottomIndex, targetIndex);
     }
     else {
@@ -59,7 +59,7 @@ public class Percolation {
     //
     // link the left cell if open
     //
-    if (col > 0) {
+    if (col > 1) {
       int leftIndex = this.getIndex(row, col-1);
       if (uf.getIndex(leftIndex)) {
         uf.union(leftIndex, targetIndex);
@@ -69,8 +69,8 @@ public class Percolation {
     //
     // link the right cell if open
     //
-    if (col != size - INDEX_ERROR) {
-      int rightIndex = this.getIndex(row, col+1);
+    if (col != size) {
+      int rightIndex = this.getIndex(row, col+INDEX_ERROR);
       if (uf.getIndex(rightIndex)) {
         uf.union(rightIndex, targetIndex);
       }
@@ -91,13 +91,16 @@ public class Percolation {
     return uf.connected(topIndex, bottomIndex);
   }
 
-  private int getIndex(int row, int col) {
+  private int getIndex(int rawRow, int rawCol) {
+    int row = rawRow - INDEX_ERROR;
+    int col = rawCol - INDEX_ERROR;
+
     if (row >= size || row < 0) {
-      String message = "row index "+row+" out of bounds";
+      String message = "row index "+rawRow+" out of bounds";
       throw new IndexOutOfBoundsException(message);
     }
     else if (col >= size || col < 0) {
-      String message = "col index "+col+" out of bounds";
+      String message = "col index "+rawCol+" out of bounds";
       throw new IndexOutOfBoundsException(message);
     }
     else {

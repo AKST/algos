@@ -72,8 +72,8 @@ public class PercolationStats {
 
         Percolation percolation = new Percolation(this.N);
         do {
-          int row = random.nextInt(N);
-          int col = random.nextInt(N);
+          int row = 1 + random.nextInt(N);
+          int col = 1 + random.nextInt(N);
           percolation.open(row, col);
         } while (percolation.percolates());
 

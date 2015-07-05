@@ -9,10 +9,6 @@ public class Deque<Item> implements Iterable<Item> {
   private Node last;
   private int size = 0;
 
-  public Iterator<Item> iterator() {
-    return new DequeIterator(this.head);
-  }
-
   /**
    * @performance O(1)
    */
@@ -121,6 +117,10 @@ public class Deque<Item> implements Iterable<Item> {
       oldLast.nullify();
       return result;
     }
+  }
+
+  public Iterator<Item> iterator() {
+    return new DequeIterator(this.head);
   }
 
   private class Node {

@@ -10,7 +10,7 @@ import java.util.Random;
  */
 public class RandomizedQueue<Item> implements Iterable<Item> {
 
-  private static final Random random = new Random();
+  private static final Random RANDOM = new Random();
   private Item[] items;
   private int size;
 
@@ -50,7 +50,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
       throw new NoSuchElementException();
     }
 
-    int derefIndex = random.nextInt(this.size);
+    int derefIndex = RANDOM.nextInt(this.size);
     Item result = this.items[derefIndex];
     this.items[derefIndex] = this.items[this.size - 1];
 
@@ -75,7 +75,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
       throw new NoSuchElementException();
     }
 
-    int derefIndex = random.nextInt(this.size);
+    int derefIndex = RANDOM.nextInt(this.size);
     Item result = this.items[derefIndex];
     this.items[derefIndex] = this.items[this.size - 1];
 
@@ -122,7 +122,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     public Item next() {
       if (this.hasNext()) {
-        int derefIndex = random.nextInt(this.index);
+        int derefIndex = RANDOM.nextInt(this.index);
 
         Item result = this.items[derefIndex];
         this.items[derefIndex] = this.items[this.index - 1];
