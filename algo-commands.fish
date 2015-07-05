@@ -55,11 +55,27 @@ end
 #
 function watch_command
   if [ (count $argv) -gt 1 ]
+    set command $argv[2..(count $argv)]
+
+    function watch_prompt
+      echo "[ running (" $argv[1] ") ] :: [" (date +%T) "]"
+    end
+
+    #
+    # initial run of script
+    #
+    watch_prompt $command
+    pick_operation $command
+
+    #
+    # start watching
+    #
     while true
       sleep 1.75
       set changes (find $src_path -type f -mtime -2s -name '*.java')
       if test $changes
-        pick_operation $argv[2..(count $argv)]
+        watch_prompt $command
+        pick_operation $command
       end
     end
   else
