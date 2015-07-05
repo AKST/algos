@@ -15,6 +15,15 @@ set tool_dir 'tools'
 set class_path "$dist_dir:$lib_dir/*"
 set package_path 'io.akst.algo'
 
+function heading
+  set_color red
+  echo
+  echo "  [ " $argv[1] " ]"
+  echo
+  set_color normal
+end
+
+
 #
 # creates the $dist_dir if it does not exist
 #
@@ -132,25 +141,28 @@ function package
   # package exercise
   #
   if python scripts/package.py $week_number $zip_location
-     #
-     # extract output
-     #
-     unzip $zip_location -d $unzip_location
-     #
-     # validate output
-     #
-     set java_source (find $unzip_location -name '*.java')
-     javac -cp "$lib_dir/*" $java_source
-     for file in $java_source
-       java -jar $tool_dir/checkstyle.jar \
-           com.puppycrawl.tools.checkstyle.Main \
-           -c config/styles.xml $file
-     end
-     #
-     # remove extracted output
-     #
-     rm -rf $unzip_location
-   end
+    #
+    # extract output
+    #
+    unzip $zip_location -d $unzip_location
+    #
+    # validate output
+    #
+    set java_source (find $unzip_location -name '*.java')
+    heading "compiling source for error checking"
+    javac -cp "$lib_dir/*" $java_source
+    heading "validataing style"
+    for file in $java_source
+      java -jar $tool_dir/checkstyle.jar \
+          com.puppycrawl.tools.checkstyle.Main \
+          -c config/styles.xml $file
+    end
+    #
+    # remove extracted output
+    #
+    heading "remove excess"
+    rm -rf $unzip_location
+  end
 end
 
 function run
