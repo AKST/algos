@@ -10,17 +10,12 @@ def percolation(location):
     perc_stats = parser.parse_file(file('src/io/akst/algo/week1/PercolationStats.java'))
     union_find = parser.parse_file(file('src/io/akst/algo/week1/IndexUF.java'))
 
-    #
-    # currently there is an issue with adding the appropiate dimentions
-    #
-    union_find.type_declarations[0]\
-        .body[0]\
-        .type\
-        .dimensions = 1
 
     remove_package_declaration(percolation)
     remove_package_declaration(perc_stats)
     add_class_as_inner_class(union_find, percolation)
+    remove_princeton_imports(percolation)
+    remove_princeton_imports(perc_stats)
 
     printer = pretty_printer.PrettyPretter(2)
     with zipfile.ZipFile(location, mode='w') as percolation_zip:
