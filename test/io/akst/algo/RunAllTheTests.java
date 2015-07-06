@@ -4,6 +4,7 @@ import io.akst.algo.week1.TestPercolation;
 import io.akst.algo.week1.TestIndexUF;
 import io.akst.algo.week2.TestDeque;
 import io.akst.algo.week2.TestRandomizedQueue;
+import io.akst.algo.week3.TestPoint;
 
 import org.junit.runner.RunWith;
 import org.junit.runner.Computer;
@@ -15,7 +16,8 @@ import org.junit.runners.Suite;
   TestPercolation.class,
   TestIndexUF.class,
   TestDeque.class,
-  TestRandomizedQueue.class
+  TestRandomizedQueue.class,
+  TestPoint.class
 })
 public final class RunAllTheTests {}
 
