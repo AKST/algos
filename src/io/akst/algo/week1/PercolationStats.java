@@ -2,6 +2,8 @@ package io.akst.algo.week1;
 
 
 import java.util.Random;
+import edu.princeton.cs.introcs.StdStats;
+import edu.princeton.cs.introcs.Stopwatch;
 
 
 public class PercolationStats {
@@ -30,25 +32,12 @@ public class PercolationStats {
 
   public double mean() {
     this.run();
-    double sum = 0;
-    for (int index = 0; index < this.T; index++) {
-      sum += this.times[index];
-    }
-    return sum / this.T;
+    return StdStats.mean(this.times);
   }
 
   public double stddev() {
     this.run();
-    double sum = 0;
-    double sqSum = 0;
-    for (int index = 0; index < this.T; index++) {
-      sum   += this.times[index];
-      sqSum += this.times[index] * this.times[index];
-    }
-    double mean = sum / this.T;
-    double variance = sqSum / this.T - mean * mean;
-    double stddev =  Math.sqrt(variance);
-    return stddev;
+    return StdStats.stddev(this.times);
   }
 
   public double confidenceLo() {
@@ -66,9 +55,10 @@ public class PercolationStats {
    */
   private void run() {
     if (!this.hasRan) {
+      Stopwatch watch = new Stopwatch();
       for (int iteration = 0; iteration < this.T; iteration++) {
 
-        long startTime = System.nanoTime();
+        double startTime = watch.elapsedTime();
 
         Percolation percolation = new Percolation(this.N);
         do {
@@ -77,9 +67,8 @@ public class PercolationStats {
           percolation.open(row, col);
         } while (percolation.percolates());
 
-        long endTime = System.nanoTime();
-        double eplasped = endTime - startTime;
-        this.times[iteration] = eplasped / 1E9;
+        double endTime = watch.elapsedTime();
+        this.times[iteration] = endTime - startTime;
       }
       this.hasRan = true;
     }

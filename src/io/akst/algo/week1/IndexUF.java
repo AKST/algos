@@ -1,10 +1,15 @@
 package io.akst.algo.week1;
 
 
+import java.util.Arrays;
+
+
 public class IndexUF {
-  private int[]     parent;  // parent[i] = parent of i
-  private boolean[] status;  // parent[i] = parent of i
-  private int count;     // number of components
+  private int count;
+  private final int[] parent;
+  private final int[] size;
+  private final boolean[] status;
+
 
   /**
    * Initializes an empty union-find data structure with N isolated components 0 through N-1.
@@ -12,14 +17,15 @@ public class IndexUF {
    * @param N the number of objects
    */
   public IndexUF(int N, boolean initial) {
+    size   = new int[N];
     parent = new int[N];
     status = new boolean[N];
 
-    //parent = (Index[]) new Object[N];
     count = N;
     for (int i = 0; i < N; i++) {
       parent[i] = i;
       status[i] = false;
+      size[i] = 1;
     }
   }
 
@@ -40,11 +46,11 @@ public class IndexUF {
   public int find(int pRaw) {
 		// styling software won't let me get away with this
 		int p = pRaw;
-    validate(p);
+    //validate(p);
     while (p != parent[p]) {
       p = parent[p];
 		}
-    return parent[p];
+    return p;
   }
 
   // validate that p is a valid index
@@ -87,8 +93,17 @@ public class IndexUF {
   public void union(int p, int q) {
     int rootP = find(p);
     int rootQ = find(q);
+
     if (rootP == rootQ) return;
-    parent[rootP] = rootQ;
+
+    if (size[rootP] < size[rootQ]) {
+      parent[rootP] = rootQ;
+      size[rootQ]  += size[rootP];
+    }
+    else {
+      parent[rootQ] = rootP;
+      size[rootP]  += size[rootQ];
+    }
     count--;
   }
 
