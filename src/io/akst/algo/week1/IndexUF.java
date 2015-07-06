@@ -1,9 +1,6 @@
 package io.akst.algo.week1;
 
 
-import java.util.Arrays;
-
-
 public class IndexUF {
   private int count;
   private final int[] parent;
