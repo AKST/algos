@@ -1,5 +1,6 @@
 package io.akst.algo.week3;
 
+import edu.princeton.cs.introcs.StdDraw;
 import java.util.Comparator;
 
 class Point implements Comparable<Point> {
@@ -15,11 +16,11 @@ class Point implements Comparable<Point> {
   }
 
   public void draw() {
-    throw new UnsupportedOperationException();
+    StdDraw.point(this.x, this.y);
   }
 
   public void drawTo(Point that) {
-    throw new UnsupportedOperationException();
+    StdDraw.line(this.x, this.y, that.x, that.y);
   }
 
   public int compareTo(Point that) {
@@ -51,7 +52,7 @@ class Point implements Comparable<Point> {
   }
 
   public String toString() {
-    throw new UnsupportedOperationException();
+    return "Point("+this.x+","+this.y+")";
   }
 
   private final class SlopeComparator implements Comparator<Point> {
