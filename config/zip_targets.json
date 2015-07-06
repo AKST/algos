@@ -1,0 +1,21 @@
+{
+  "weeks": {
+    "1": [{
+      "r_path": "src/io/akst/algo/week1/Percolation.java",
+      "w_path": "Percolation.java"
+    }, {
+      "r_path": "src/io/akst/algo/week1/PercolationStats.java",
+      "w_path": "PercolationStats.java"
+    }],
+    "2": [{
+      "r_path": "src/io/akst/algo/week2/Deque.java",
+      "w_path": "Deque.java"
+    }, {
+      "r_path": "src/io/akst/algo/week2/RandomizedQueue.java",
+      "w_path": "RandomizedQueue.java"
+    }, {
+      "r_path": "src/io/akst/algo/week2/Subset.java",
+      "w_path": "Subset.java"
+    }]
+  }
+}

@@ -1,6 +1,9 @@
 package io.akst.algo.week1;
 
 
+import edu.princeton.cs.algs4.WeightedQuickUnionUF;
+
+
 /**
  * Percolation is a model of a percolation simulation
  * for a grid of N by N squares.
@@ -10,7 +13,8 @@ public class Percolation {
   private static final int INDEX_ERROR = 1;
 
   private final int size;
-  private final IndexUF uf;
+  private final WeightedQuickUnionUF uf;
+  private final boolean[] siteStatus;
 
   private final int topIndex;
   private final int bottomIndex;
@@ -22,47 +26,63 @@ public class Percolation {
     this.size = N;
     this.topIndex    = ((N * N) + 1) - INDEX_ERROR;
     this.bottomIndex = ((N * N) + 2) - INDEX_ERROR;
-    this.uf = new IndexUF((N * N) + 2, false);
-    this.uf.setIndex(topIndex, true);
-    this.uf.setIndex(bottomIndex, true);
+    this.siteStatus = new boolean[(N * N) + 2];
+    this.siteStatus[topIndex] = true;
+    this.siteStatus[bottomIndex] = true;
+    this.uf = new WeightedQuickUnionUF((N * N) + 2);
   }
 
   public void open(int row, int col) {
     int targetIndex = this.getIndex(row, col);
+
+    // if site open continue
+    if (this.siteStatus[targetIndex]) { return; }
 
     //
     // link the above cell if open
     //
     if (row == 1) {
       uf.union(topIndex, targetIndex);
+      int belowIndex = this.getIndex(row+1, col);
+      if (this.siteStatus[belowIndex]) {
+        uf.union(targetIndex, belowIndex);
+      }
     }
+    //
+    // link the below cell if open
+    //
+    else if (row == size) {
+      uf.union(targetIndex, bottomIndex);
+      int aboveIndex = this.getIndex(row-1, col);
+      if (this.siteStatus[aboveIndex]) {
+        uf.union(targetIndex, aboveIndex);
+      }
+    }
+    //
+    // in between the top and the bottom
+    //
     else {
       int aboveIndex = this.getIndex(row-1, col);
-      if (uf.getIndex(aboveIndex)) {
-        uf.union(aboveIndex, targetIndex);
+      if (this.siteStatus[aboveIndex]) {
+        uf.union(targetIndex, aboveIndex);
+      }
+      int belowIndex = this.getIndex(row+1, col);
+      if (this.siteStatus[belowIndex]) {
+        uf.union(targetIndex, belowIndex);
       }
     }
 
     //
     // link the below cell if open
     //
-    if (row == size) {
-      uf.union(bottomIndex, targetIndex);
-    }
-    else {
-      int belowIndex = this.getIndex(row+1, col);
-      if (uf.getIndex(belowIndex)) {
-        uf.union(belowIndex, targetIndex);
-      }
-    }
 
     //
     // link the left cell if open
     //
     if (col > 1) {
       int leftIndex = this.getIndex(row, col-1);
-      if (uf.getIndex(leftIndex)) {
-        uf.union(leftIndex, targetIndex);
+      if (this.siteStatus[leftIndex]) {
+        uf.union(targetIndex, leftIndex);
       }
     }
 
@@ -71,20 +91,22 @@ public class Percolation {
     //
     if (col != size) {
       int rightIndex = this.getIndex(row, col+INDEX_ERROR);
-      if (uf.getIndex(rightIndex)) {
-        uf.union(rightIndex, targetIndex);
+      if (this.siteStatus[rightIndex]) {
+        uf.union(targetIndex, rightIndex);
       }
     }
 
-    uf.setIndex(targetIndex, true);
+    this.siteStatus[targetIndex] = true;
   }
 
   public boolean isOpen(int row, int col) {
-    return uf.getIndex(this.getIndex(row, col));
+    int index = this.getIndex(row, col);
+    return this.siteStatus[index];
   }
 
   public boolean isFull(int row, int col) {
-    return uf.connected(this.getIndex(row, col), topIndex);
+    int index = this.getIndex(row, col);
+    return uf.connected(index, topIndex);
   }
 
   public boolean percolates() {
